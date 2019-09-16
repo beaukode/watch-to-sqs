@@ -24,7 +24,7 @@ jobs:
             - dist
             - deploy
   deploy:
-    working_directory: /workspace
+    working_directory: ~/workspace
     docker:
       - image: docker:18.06.0-ce
     steps:
