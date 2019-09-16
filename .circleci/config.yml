@@ -71,5 +71,5 @@ workflows:
       - build:
       - deploy:
         requires:
-            - build
+          - build
         context: hub-registry
