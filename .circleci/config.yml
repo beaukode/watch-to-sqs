@@ -20,7 +20,8 @@ jobs:
           command: |
             set +o pipefail
             npm run-script build
-            cp LICENSE dist/LICENSE
+            cp LICENSE dist/
+            cp package.json dist/
       - persist_to_workspace:
           root: ~/workspace
           paths:
