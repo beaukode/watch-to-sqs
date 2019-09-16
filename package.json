@@ -1,0 +1,20 @@
+{
+  "name": "watch-to-sqs",
+  "version": "1.0.0",
+  "description": "Watch a directory for incoming data files (CSV, XML, XLS,....) and send them to a AWS SQS Queue",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jérémie COLOMBO",
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.528.0",
+    "chokidar": "^3.0.2",
+    "csvtojson": "^2.0.10"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.5"
+  }
+}
