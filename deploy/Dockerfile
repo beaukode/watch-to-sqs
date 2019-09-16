@@ -6,6 +6,6 @@ COPY dist/LICENSE /app/
 
 WORKDIR /app
 
-RUN npm install
+RUN npm install --production
 
 CMD ["/usr/local/bin/node", "index.js"]

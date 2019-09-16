@@ -22,6 +22,7 @@ jobs:
             npm run-script build
             cp LICENSE dist/
             cp package.json dist/
+            cp package-lock.json dist/
       - persist_to_workspace:
           root: ~/workspace
           paths:
