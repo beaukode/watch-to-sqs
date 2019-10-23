@@ -4,6 +4,7 @@ import * as path from "path";
 import * as chokidar from "chokidar";
 import * as csv from "csvtojson";
 import Move from "./move";
+import Log from "./log";
 
 const accessKeyId = process.env["AWS_KEYID"];
 const secretAccessKey = process.env["AWS_SECRET"];
@@ -18,22 +19,22 @@ if (process.env["MESSAGE_ATTRIBUTES"]) {
   try {
     messageAttributes = JSON.parse(process.env["MESSAGE_ATTRIBUTES"]);
   } catch (err) {
-    console.error("Failed to parse MESSAGE_ATTRIBUTES:", err.message);
+    Log.error("Failed to parse MESSAGE_ATTRIBUTES:", err.message);
     process.exit(1);
   }
 }
 
-console.log("AWS_KEYID=" + accessKeyId);
-console.log("AWS_SECRET=" + (secretAccessKey ? "**********" : ""));
-console.log("AWS_REGION=" + region);
-console.log("QUEUE_URL=" + queueUrl);
-console.log("WATCH_PATH=" + watchPath);
-console.log("ARCHIVES_DIR=" + archivesDir);
-console.log("ERRORS_DIR=" + errorsDir);
-console.log("MESSAGE_ATTRIBUTES=" + JSON.stringify(messageAttributes));
-console.log("-------------------");
+Log.log("AWS_KEYID=" + accessKeyId);
+Log.log("AWS_SECRET=" + (secretAccessKey ? "**********" : ""));
+Log.log("AWS_REGION=" + region);
+Log.log("QUEUE_URL=" + queueUrl);
+Log.log("WATCH_PATH=" + watchPath);
+Log.log("ARCHIVES_DIR=" + archivesDir);
+Log.log("ERRORS_DIR=" + errorsDir);
+Log.log("MESSAGE_ATTRIBUTES=" + JSON.stringify(messageAttributes));
+Log.log("-------------------");
 if (!accessKeyId || !secretAccessKey || !region || !queueUrl || !watchPath) {
-  console.error(
+  Log.error(
     "You must set environement variables : AWS_KEYID, AWS_SECRET, AWS_REGION, QUEUE_URL, WATCH_PATH"
   );
   process.exit(1);
@@ -55,7 +56,7 @@ const watcher = chokidar.watch(watchPath, {
 });
 
 watcher.on("add", async function(path, stats) {
-  console.log("Got a new file:", path);
+  Log.log("Got a new file:", path);
   csv({ delimiter: ";" })
     .fromFile(path)
     .then(
@@ -69,16 +70,16 @@ watcher.on("add", async function(path, stats) {
           .sendMessage(params)
           .promise()
           .then(function() {
-            console.log("OK:", path);
+            Log.log("OK:", path);
             move.toArchives(path);
           })
           .catch(err => {
-            console.error("ERROR:", path, err.message);
+            Log.error("ERROR:", path, err.message);
             move.toError(path);
           });
       },
       err => {
-        console.error("ERROR:", path, "(" + err.name + ")");
+        Log.error("ERROR:", path, "(" + err.name + ")");
         move.toError(path);
       }
     );

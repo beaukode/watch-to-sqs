@@ -16,11 +16,8 @@ export default class Move {
   }
 
   public toArchives(file: string) {
-    const now = new Date();
     let dest = path.join(
       this.archivesPath,
-      now.getFullYear().toString(),
-      now.getMonth().toString().padStart(2, "0"),
       path.basename(file)
     );
     if (fs.existsSync(dest)) {
